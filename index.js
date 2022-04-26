@@ -14,20 +14,24 @@ let connection  = mysql.createConnection({
     database: 'mydb'
 });  
 var ftypes;
-connection.connect(function(err) {
+var numberofFuels;
+connection.connect(async function(err) {
     if (err) throw err;
     console.log("Connected!");
-    connection.query(Q.engineType, function (err, result, fields) {
+    await connection.query(Q.engineType, function (err, result, fields) {
       if (err) throw err;
       //console.log("Result: " + result);
       ftypes = result; 
-      Object.keys(result).forEach(function(key){
-          var row = result[key];
-          console.log(row.enginetype);
-      })
-    }); 
-  }); 
 
+    }); 
+    await connection.query(Q.availableBiketypes, function (err, result, fields) {
+        if (err) throw err;
+        numberofFuels = result; 
+        console.log(numberofFuels);
+      });
+  }); 
+  
+  
 app.use(express.static(path.join(__dirname,'content')));
 const port = process.env.PORT;
 app.set('view engine','ejs');
@@ -50,7 +54,7 @@ app.post("/page2" , (req,res)=>{
 })
 app.get('/landing',(req,res)=>{
     
-      res.render('landing.ejs' , {ftypes});
+      res.render('landing.ejs' , {ftypes , numberofFuels});
 })
 app.get('/about',(req,res)=>{
     res.send("under  construction");
