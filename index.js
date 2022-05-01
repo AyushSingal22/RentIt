@@ -38,19 +38,18 @@ var numberofFuels;
   
   
 app.use(express.static(path.join(__dirname,'content')));
-const port = process.env.PORT;
+const port = process.env.PORT; 
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'views') )
 
-
+ 
 const req = require('express/lib/request');
 
 app.post('/page3',async(req,res)=>{ 
     
-    const{idbike} = req.body;
-    var data = await mySql(`select * from bike where idbike = ${idbike}`);
+    const {idbike} = req.body;
+    var data = await mySql(`select * from bike where idbike = ${idbike}` );
     var storeid = data[0].idstore;
-    
     var datastore = await mySql(`select location from store where idstore = ${storeid}`);
     var price = await mySql(Q.getprice+ idbike);
     
@@ -67,6 +66,18 @@ app.post("/landing", (req , res)=>{
     const {fueltype} = req.body;
     
     res.redirect('/page2');
+}) 
+
+app.post("/page4" , async(req,res)=>{
+    var{dropdate,pickupdate,price,idbike} = req.body;
+     
+    console.log(idbike)
+    var data = await mySql(`select * from bike where idbike = ${idbike}` );
+    var storeid = data[0].idstore;
+    var datastore = await mySql(`select location from store where idstore = ${storeid}`);
+    if(dropdate<pickupdate) res.send("<div class=\"container\"> <h1>Wrong date input</h1> </div>");
+    
+    else res.render('page4.ejs',{price,dropdate,pickupdate,data,datastore});
 })
 app.post("/page2" ,async (req,res)=>{
     var {fueltype} = req.body;
