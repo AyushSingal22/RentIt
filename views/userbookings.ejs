@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="icon" type="image/x-icon" href="/images/2.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row">
+            
+            <% Object.keys(customer).forEach(function(key){ %>
+                <div class="col mx-3">
+                <% var row =customer[key]; %>
+                  <b>Name : </b><%= row.name %>   <br>
+                  <b>ID: </b><%= row.idcustomer %> <br>
+                    <b>Email: </b> <%= row.email %> <br>
+                    <b>Number: </b><%= row.phone %> <br>
+                  <b>Address: </b><%= row.address %> <br>
+                </div>
+                <% }) %>
+            
+        </div>
+    </div>
+    
+    <div class="container py-5 ">
+        
+            <div class="row">
+                <div class="col">
+                    <input id = "showbooking"type="button" class =" btn btn-dark "value="Show all bookings">
+                </div>
+            </div>
+        
+            <div class="container " id ="bookshow"style="display :none " >
+
+            
+                <% Object.keys(books).forEach(function(key){ %>
+                    
+                    <% var row =books[key]; %>
+                    <div class="row my-4 mx-4">
+                        <div class="col">
+                      <b>Booking id : </b><%= row.idBooking %>   <br>
+                        <b>Bike id : </b> <%= row.id_bike %> <br>
+                        <b>Booking time: </b><%= row.bookingtime %> <br>
+                      <b>Pickup time: </b><%= row.pickuptime %> <br>
+                      <b>DropTime: </b><%= row.droptime %> <br>
+                      <b>Price: </b><%= row.price %> <br>
+                    </div>
+                    </div>
+                    <% }) %>
+                </div>
+        
+    </div>
+    <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="/js/home.js"></script>
+</body>
+</html>

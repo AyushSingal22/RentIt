@@ -143,7 +143,20 @@ app.get('/landing',async (req,res)=>{
 app.get('/about',(req,res)=>{
     res.send("under  construction");
 })
+app.get('/userbook', async (req,res)=>{
 
+    res.render('login');
+})
+app.post('/loggedin' , async(req,res)=>{
+    const {username , phonenumber  } = req.body;
+    var customer = await mySql(`select * from customer where name= \"${username}\" and phone=   ${phonenumber}  `)
+    var books = await mySql(`select * from booking where idcustomer = ${customer[0].idcustomer}`)
+        res.render('userbookings',{customer, books})
+})
+app.get('/admin', async (req,res)=>{ 
+
+    res.send("duvks");
+})
 app.listen(port || 3000,()=>{
     console.log("connected");
 })
