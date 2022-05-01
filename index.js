@@ -1,3 +1,5 @@
+var {Q} = require('./query.js');
+var {imgs} = require('./images.js');
 
 const express = require('express');
 const res = require('express/lib/response');
@@ -7,15 +9,18 @@ app.use(express.urlencoded({ extended: true }))
 // To parse incoming JSON in POST request body:
 app.use(express.json())
 const mysql = require('mysql');
-let connection  = mysql.createConnection({
+var ftypes 
+//sqlCall(Q.engineType ,ftypes);
+var numberofFuels; 
+//sqlCall(Q.availableBiketypes , numberofFuels);
+ let connection  = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '980123',
     database: 'mydb'
 });  
-var ftypes;
-var numberofFuels;
-connection.connect(async function(err) {
+
+ connection.connect(async function(err) {
     if (err) throw err;
     console.log("Connected!");
     await connection.query(Q.engineType, function (err, result, fields) {
@@ -27,9 +32,9 @@ connection.connect(async function(err) {
     await connection.query(Q.availableBiketypes, function (err, result, fields) {
         if (err) throw err;
         numberofFuels = result; 
-        console.log(numberofFuels);
+        //console.log(numberofFuels);
       });
-  }); 
+  });  
   
   
 app.use(express.static(path.join(__dirname,'content')));
@@ -37,9 +42,24 @@ const port = process.env.PORT;
 app.set('view engine','ejs');
 app.set('views',path.join(__dirname,'views') )
 
-const {Q} = require('./query.js');
+
 const req = require('express/lib/request');
 
+app.post('/page3',async(req,res)=>{ 
+    
+    const{idbike} = req.body;
+    var data = await mySql(`select * from bike where idbike = ${idbike}`);
+    var storeid = data[0].idstore;
+    
+    var datastore = await mySql(`select location from store where idstore = ${storeid}`);
+    var price = await mySql(Q.getprice+ idbike);
+    
+    res.render('page3.ejs' , {data , datastore , price });
+})
+function rand(imgs){
+    var num = Math.floor(Math.random() * (6 - 1)) + 1;
+    return imgs[num];
+}
 app.get('/',(req,res)=>{
     res.render('home.ejs');
 })
@@ -48,9 +68,16 @@ app.post("/landing", (req , res)=>{
     
     res.redirect('/page2');
 })
-app.post("/page2" , (req,res)=>{
-    const {fueltype} = req.body;
-    res.render('page2.ejs', {fueltype});
+app.post("/page2" ,async (req,res)=>{
+    var {fueltype} = req.body;
+    var storein;
+    storein = await mySql(Q.allbikes+` where enginetype = \"${fueltype}\" `);
+    if(fueltype=="*"){
+        storein= await mySql(Q.allbikes);
+        fueltype ="All";
+    }
+    //console.log(rand(imgs));
+    res.render('page2.ejs',{fueltype,storein,imgs , rand});
 })
 app.get('/landing',(req,res)=>{
     
@@ -64,3 +91,20 @@ app.listen(port || 3000,()=>{
     console.log("connected");
 })
   
+
+async function mySql(Q){
+    const conn = await connect();
+    const [rows] = await conn.query(Q);
+    //console.log(rows);
+    return rows;
+  }
+  
+  async function connect(){
+    if(global.connection && global.connection.state !== 'disconnected')
+        return global.connection;
+    const mysql = require("mysql2/promise");
+    const connection = await mysql.createConnection("mysql://root:980123@localhost:3306/mydb");
+    console.log("Connected to MySQL!");
+    global.connection = connection;
+    return connection;
+  }

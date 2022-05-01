@@ -49,6 +49,8 @@
           <label for="fueltype" class="form-label">Choose the Type: </label>
 
           <select name="fueltype" id="fueltype" class="form-select ">
+            
+            <option value="*">All bikes</option>
             <% Object.keys(ftypes).forEach(function(key){ %>
             <% var row = ftypes[key]; %>
             <option value="<%= row.enginetype %>"><%= row.enginetype %> </option>
@@ -56,15 +58,18 @@
           </select>
           <div class="row ">
             <div class="col my-2 text-center">
-              <h2 class = "noe">
+              <h3>Available Numbers</h3> 
+              <h5 class = "noe">
+                
                 <% Object.keys(numberofFuels).forEach(function(key){ %>
                   <% var row =numberofFuels[key]; %>
                   <div id="ename<%= row.enginetype %>">
                     <%= row.enginetype %>  : <%= row.count %>
                   </div>
                   <% }) %>
-              </h2>
-              <h3>available</h3> 
+
+              </h5>
+              
             </div>
           </div>
           <div class="row">
