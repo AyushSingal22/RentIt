@@ -54,7 +54,36 @@
             <h3>Pickup date: <%=pickupdate%></h2>
             <h3>Drop date: <%=dropdate%></h2>
         </div>
+  <form action="/page5" method="post" >
+  
+    <input name = "pickupdate" type="text" value="<%=pickupdate%>" hidden>
+    <input name="dropdate"type="text" value="<%=dropdate%>" hidden>
+    <input name="price"type="text" value="<%= price %>" hidden>
+    <input name="idbike"type="text" value="<%= data[0].idbike %>" hidden>
+
+  <div class="container bg-light py-5">
+    <div class="row">
+      <div class="col-5">
+        <div class="input-group mb-3">
+          <span  class="input-group-text" id="inputGroup-sizing-default"  >Username</span>
+          <input name="username" type="text" placeholder="Enter you name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+    </div>
     
+    <div class="row">
+      <div class="col-5">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default"  >Password</span>
+          <input name="phonenumber"type="password" placeholder="Enter you number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-primary">signin/signup</button>
+      </div>
+    </div>
+    </form>
+  </div>
   <footer class=" py-5 ">
 
   </footer>

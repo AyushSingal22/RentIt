@@ -67,7 +67,11 @@ app.post("/landing", (req , res)=>{
     
     res.redirect('/page2');
 }) 
-
+app.post('/page5',(req,res)=>{
+    const {idbike,pickupdate,dropdate,price,phonenumber,username} = req.body;
+    
+    res.render('page5.ejs');
+})
 app.post("/page4" , async(req,res)=>{
     var{dropdate,pickupdate,price,idbike} = req.body;
      
