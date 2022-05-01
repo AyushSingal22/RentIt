@@ -39,40 +39,55 @@
   <!--  navbar ending -->
   <div class="container">
       <h1>
-          <%= status %> 
+          <%= status %> !
       </h1>
-      <h2>
-       <b>Name: </b> <%= username %> 
-      </h2>
-      <h2>
-        <b>Customer id : </b> <%= customer[0].idcustomer%> %> 
-      </h2>
-      <h2>
-        <b>Bike id: </b><%= idbike %> 
-      </h2>
-      <h2>
-        <b>PickupDate:</b><%= pickupdate %> 
-      </h2>
-      <h2>
-        <b>DropDate: </b><%= dropdate %> 
-      </h2>
-      <h2>
-        <b>Price: </b><%= price %> 
-      </h2>
-      <h2>
-        <b>Email: </b><%=customer[0].email%> 
-      </h2>
-  </div>
-  <form action="/checkout" method="post">
-
-    <input type="hidden" name="idcust" value="<%=customer[0].idcustomer%>"> >
+    <form action="/page5" method="post">
     <input name = "pickupdate" type="text" value="<%=pickupdate%>" hidden>
     <input name="dropdate"type="text" value="<%=dropdate%>" hidden>
     <input name="price"type="text" value="<%= price %>" hidden>
     <input name="idbike"type="text" value="<%=idbike %>" hidden>
       <input type="text" name="idcust" value="<%= id %>" hidden>
-      <input type="submit" class="btn btn-primary">
-  </form>
+      <input type="text" name="phonenumber" value="<%= phonenumber %>" hidden>
+      <input type="text" name="username" value="<%= username %>" hidden>
+      <input type="text" name="makeit" value="makeit" hidden>
+        <div class="row">
+          <div class="col">
+            <b>New Id: <span ><%= id %> </span></b> <br>
+            <b> Name: </b><span ><%= username %></span>  <br>
+            <b> phone: </b><span ><%= phonenumber %></span> <br>
+             
+          </div>
+        </div>
+        <div class="row py-3">
+          <div class="col-3">
+            Select your age: 
+            <input name="age"  required class="form-control" type="number" max="60" min="18">
+          </div>
+          <div class="col-6">
+            Enter the DL number: 
+            <input name="dl" class="form-control" required type="number" min="999999999999" max="10000000000000" placeholder="enter the 12 digit DL">
+            
+          </div>
+        </div>
+        <div class="row py-3">
+          <div class="col">
+            Enter the Address: 
+            <div class="input-group">
+              <span class="input-group-text">Address</span>
+              <textarea required name="address" class="form-control" aria-label="With textarea"></textarea>
+            </div>
+            
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            Enter the email id: 
+            <input type="email" class="form-control" name="email">
+          </div>
+        </div>
+        <input type="submit" class="btn btn-primary m-3"value=" Make account">
+      </form>
+  </div>
   <footer class=" py-5 ">
 
   </footer>

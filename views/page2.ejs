@@ -37,7 +37,26 @@
     </div>
   </nav>
   <!--  navbar ending -->
+  <div class="container py-3">
+    <div class="row">
+      <h2>Top Sellers</h2>
+    </div>
+    <div class="row">
 
+        <% Object.keys(topbikes).forEach(function(key){ %>
+          <% var row = topbikes[key]; %>
+            <div class="topsell col-2 my-3 mx-3  rounded-3 p-3 text-white">
+                  <b>Model Name</b> <%= row.model %> <br>
+                  <b>Engine type:</b><%= row.enginetype %> <br>
+                  <b>BikeId: </b><%= row.id %> <br>
+                  <b>Bike Name</b><%= row.name %>
+            </div>
+
+          
+          <% }) %>
+      </div>
+    </div>
+  </div>
   <div class="container">
       <div class="row">
           <div class="col">

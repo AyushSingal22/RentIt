@@ -44,6 +44,7 @@ app.set('views',path.join(__dirname,'views') )
 
  
 const req = require('express/lib/request');
+const { stat } = require('fs');
 
 app.post('/page3',async(req,res)=>{ 
     
@@ -59,6 +60,10 @@ function rand(imgs){
     var num = Math.floor(Math.random() * (6 - 1)) + 1;
     return imgs[num];
 }
+function random(){
+    return Math.floor(Math.random() * (20 - 1)) + 1;
+    
+}
 app.get('/',(req,res)=>{
     res.render('home.ejs');
 })
@@ -67,10 +72,45 @@ app.post("/landing", (req , res)=>{
     
     res.redirect('/page2');
 }) 
-app.post('/page5',(req,res)=>{
-    const {idbike,pickupdate,dropdate,price,phonenumber,username} = req.body;
+app.post('/checkout', async (req,res)=>{
+    var {idcust,pickupdate,idcust,dropdate,idbike,price} = req.body;
+    try{
+    var bid = await mySql("select max(idbooking) as max from booking")
+
+    }catch{}
+    var idbook = parseInt(bid[0].max) +1;
+    idbike = parseInt(idbike);
+    price = parseInt(price); 
+    idcust = parseInt(idcust);
+   
+var today = new Date();
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+var dateTime = date+' '+time;
+    var booked = await mySql(`insert into booking values(${idbook} , ${idcust}, ${idbike},\"${dateTime}\",\"${pickupdate}\" , \"${dropdate}\" , ${price} , ${random()}) `);
+     
+    res.redirect('/landing');
+
+})
+
+app.post('/page5',async (req,res)=>{
+    const {idbike,pickupdate,dropdate,price,makeit,phonenumber,username,address,age,email,dl,idcust} = req.body;
+    if(makeit=="makeit"){
+        var newuser = await mySql(`INSERT INTO customer VALUES(${idcust}, \"${username}\",${age}, \"${email}\", ${dl},${phonenumber}, \"${address}\")`)
+    }
+        var customer = await mySql(Q.checkuser+ ` name=\"${username}\"and phone = \"${phonenumber}\"`)
+        if(customer[0] == null){
+            var status = "Welcome new user";
+            var maxid = await mySql(Q.getmaxidcutomer);
+            var id = parseInt(maxid[0].maxid) +1; 
+            console.log(id) 
+            res.render('page5b.ejs',{status,email,phonenumber,username,id,idbike,pickupdate,dropdate,price})
+        }
+        else{
+            var status = "Welcome back";
+            res.render('page5.ejs' ,{status,customer,phonenumber,username,id,newuser,idbike,pickupdate,dropdate,price});  
+        }
     
-    res.render('page5.ejs');
 })
 app.post("/page4" , async(req,res)=>{
     var{dropdate,pickupdate,price,idbike} = req.body;
@@ -91,12 +131,14 @@ app.post("/page2" ,async (req,res)=>{
         storein= await mySql(Q.allbikes);
         fueltype ="All";
     }
+    var topbikes = await mySql(Q.topbikes);
     //console.log(rand(imgs));
-    res.render('page2.ejs',{fueltype,storein,imgs , rand});
+    res.render('page2.ejs',{fueltype,storein,imgs , rand ,topbikes});
 })
-app.get('/landing',(req,res)=>{
-    
-      res.render('landing.ejs' , {ftypes , numberofFuels});
+app.get('/landing',async (req,res)=>{
+    var rating = await mySql(Q.getratings);
+    var avg = await mySql(Q.avgrating);
+      res.render('landing.ejs' , {ftypes , numberofFuels, rating , avg});
 })
 app.get('/about',(req,res)=>{
     res.send("under  construction");
