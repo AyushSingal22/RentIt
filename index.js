@@ -16,7 +16,7 @@ var numberofFuels;
  let connection  = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '980123',
+    password: 'purunushi',
     database: 'mydb'
 });  
 
@@ -173,7 +173,7 @@ async function mySql(Q){
     if(global.connection && global.connection.state !== 'disconnected')
         return global.connection;
     const mysql = require("mysql2/promise");
-    const connection = await mysql.createConnection("mysql://root:980123@localhost:3306/mydb");
+    const connection = await mysql.createConnection("mysql://root:purunushi@localhost:3306/mydb");
     console.log("Connected to MySQL!");
     global.connection = connection;
     return connection;
