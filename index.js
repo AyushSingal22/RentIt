@@ -91,8 +91,8 @@ var dateTime = date+' '+time;
      
     res.redirect('/landing');
 
-})
-
+}) 
+ 
 app.post('/page5',async (req,res)=>{
     const {idbike,pickupdate,dropdate,price,makeit,phonenumber,username,address,age,email,dl,idcust} = req.body;
     if(makeit=="makeit"){
